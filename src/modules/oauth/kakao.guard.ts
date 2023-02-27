@@ -7,10 +7,10 @@ export class KakaoAuthGuard extends AuthGuard('kakao') {
   }
 
   handleRequest(err, user, info) {
-    // lg.d('*** handleRequest in JwtAuthGuard (4/4)');
-    // lg.d('error', err);
-    // lg.d('user', user);
-    // lg.d('info', info);
+    // console.log('*** handleRequest in JwtAuthGuard (4/4)');
+    // console.log('error', err);
+    // console.log('user', user);
+    // console.log('info', info);
 
     // if (err || !user) {
     //   return null;

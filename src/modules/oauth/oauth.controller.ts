@@ -1,57 +1,18 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-} from '@nestjs/common';
+import { Controller, Get, Redirect, Req, Res, UseGuards } from '@nestjs/common';
 import { OauthService } from './oauth.service';
 import { Request, Response } from 'express';
-import { catchError, firstValueFrom, map } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-
-const REST_API_KEY = '5dc50ab226c6121b6d5984501f093ece';
-const REDIRECT_URI = 'http://192.168.0.8:19003/oauth/kakao';
+import { KakaoAuthGuard } from './kakao.guard';
 
 @Controller('oauth')
 export class OauthController {
-  constructor(
-    private readonly oauthService: OauthService,
-    private readonly httpService: HttpService,
-  ) {}
+  constructor(private readonly oauthService: OauthService) {}
 
   @Get('/kakao')
-  //   @UseGuards(KakaoAuthGuard)
-  async kakaoAuth(@Req() req: any) {
-    console.log('zzzz');
-  }
-
-  @Post('kakao/callback')
-  //   @UseGuards(KakaoAuthGuard)
-  async kakaoAuthCallback(
-    @Res({ passthrough: true }) res: Response,
-    @Req() req: Request,
-  ) {
-    const { ACCESS_TOKEN } = req.body;
-
-    const url = 'https://kapi.kakao.com/v2/user/me';
-    const Header = {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-    };
-
-    const tmp = await firstValueFrom(
-      this.httpService.get(url, Header).pipe(
-        map((response) => response.data),
-        catchError((error) => {
-          throw new BadRequestException();
-        }),
-      ),
-    );
-
-    if (tmp) return ACCESS_TOKEN;
-    else throw new BadRequestException();
+  // 인증 과정을 거쳐야 하기 때문에 UseGuards를 써주고 passport 인증으로 AuthGuard를 써줌
+  @UseGuards(KakaoAuthGuard)
+  async kakaoAuth(@Req() req: Request, @Res() res: Response) {
+    // 프로필을 받아온 다음, 로그인을 처리해야 하는 곳 (oauth.service.ts에서 선언해줌)
+    return this.oauthService.oauthLogin(req, res);
   }
 }
