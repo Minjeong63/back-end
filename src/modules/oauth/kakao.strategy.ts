@@ -10,9 +10,9 @@ export class JwtKakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   constructor() {
     // 자식의 constructor를 부모의 constructor에 넘기는 방법은 super를 사용하면 됨
     super({
-      clientID: '5dc50ab226c6121b6d5984501f093ece',
+      clientID: process.env.KAKAO_CLIENT_ID,
       // clientSecret: '55ISSvrwuggsDT7Ejjt9EvOqH1BYsTIe', // 없어도 됨
-      callbackURL: 'http://192.168.0.8:19003/oauth/kakao',
+      callbackURL: process.env.KAKAO_CALLBACK_URL,
       //   scope: ['account_email', 'profile_nickname'],
     });
   }
