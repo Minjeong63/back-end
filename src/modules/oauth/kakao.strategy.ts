@@ -19,8 +19,8 @@ export class JwtKakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
 
   // validate는 인증결과를 받는 부분
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    console.log('accessToken', accessToken);
-    console.log('profile', profile);
+    // console.log('accessToken', accessToken);
+    // console.log('profile', profile);
     return {
       id: profile.id,
       //   name: profile.displayName,

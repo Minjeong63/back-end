@@ -11,7 +11,7 @@ const REDIRECT_URI = 'http://192.168.0.8:19003/oauth/kakao';
 export class OauthService {
   constructor(private readonly httpService: HttpService) {}
   async oauthLogin(req: Request, res: Response) {
-    res.send('asdfasdfasdf');
+    res.redirect(`exp://192.168.0.8:19000/--/signUp?id=${res.req.user['id']}`);
   }
 
   /**
